@@ -1,15 +1,30 @@
 const buttonEl = document.getElementById('btn');
-let billAmountEl = document.getElementById('bill-amount');
-let tipAmountEl = document.getElementById('tip-percentage');
+const billAmountEl = document.getElementById('bill-amount');
+const tipAmountEl = document.getElementById('tip-percentage');
 const totalEl = document.getElementById('total');
+const errorEl = document.querySelector('.total');
 
-buttonEl.addEventListener('click', () => {
-  billAmountEl = Number(billAmountEl.value);
-  tipAmountEl = Number(tipAmountEl.value);
-  console.log('clicked');
-  console.log(typeof billAmountEl);
-  console.log(typeof tipAmountEl);
-  bill = (tipAmountEl * billAmountEl) / 100 + billAmountEl;
-  console.log(bill);
+function calculateBill() {
+  const billAmount = Number(billAmountEl.value);
+  const tipAmount = Number(tipAmountEl.value);
+
+  if (!billAmount || !tipAmount) {
+    errorEl.textContent = 'There has been an error, enter bill and tip amount!';
+    errorEl.style.color = 'red';
+    setTimeout(() => {
+      errorEl.textContent = '';
+    }, 2000);
+    return;
+  }
+
+  const bill = (tipAmount * billAmount) / 100 + billAmount;
   totalEl.textContent = `£${bill}`;
-});
+
+  // Clear inputs after 3 seconds
+  setTimeout(() => {
+    billAmountEl.value = '';
+    tipAmountEl.value = '';
+  }, 3000);
+}
+
+buttonEl.addEventListener('click', calculateBill);
